@@ -1,8 +1,8 @@
 package com.nphcda.application.views.personform;
 
-import com.nphcda.application.data.entity.SamplePerson;
+import com.nphcda.application.data.entity.EmployeeDetail;
 import com.nphcda.application.data.service.SamplePersonService;
-import com.nphcda.application.views.MainLayout;
+import com.nphcda.application.views.Homelayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -17,6 +17,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
@@ -24,7 +25,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @PageTitle("Person Form")
-@Route(value = "person-form", layout = MainLayout.class)
+@Route(value = "person-form", layout = Homelayout.class)
 @AnonymousAllowed
 @Uses(Icon.class)
 public class PersonFormView extends Div {
@@ -34,14 +35,19 @@ public class PersonFormView extends Div {
     private EmailField email = new EmailField("Email address");
     private DatePicker dateOfBirth = new DatePicker("Birthday");
     private PhoneNumberField phone = new PhoneNumberField("Phone number");
-    private TextField occupation = new TextField("Occupation");
+    private ComboBox<String> department = new ComboBox<>("Department");
+
+    private PasswordField passwordField = new PasswordField("password");
+    private PasswordField confirmPasswordField = new PasswordField("Confirm password");
 
     private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
+    private Button save = new Button("Register");
 
-    private Binder<SamplePerson> binder = new Binder(SamplePerson.class);
+    private Binder<EmployeeDetail> binder = new Binder(EmployeeDetail.class);
 
     public PersonFormView(SamplePersonService personService) {
+
+        department.setItems("ED Office", "PRS", "DCI");
         addClassName("person-form-view");
 
         add(createTitle());
@@ -60,7 +66,7 @@ public class PersonFormView extends Div {
     }
 
     private void clearForm() {
-        binder.setBean(new SamplePerson());
+        binder.setBean(new EmployeeDetail());
     }
 
     private Component createTitle() {
@@ -70,7 +76,7 @@ public class PersonFormView extends Div {
     private Component createFormLayout() {
         FormLayout formLayout = new FormLayout();
         email.setErrorMessage("Please enter a valid email address");
-        formLayout.add(firstName, lastName, dateOfBirth, phone, email, occupation);
+        formLayout.add(firstName, lastName, dateOfBirth, phone, email, department, passwordField, confirmPasswordField);
         return formLayout;
     }
 
@@ -93,7 +99,7 @@ public class PersonFormView extends Div {
             countryCode.setPlaceholder("Country");
             countryCode.setPattern("\\+\\d*");
             countryCode.setPreventInvalidInput(true);
-            countryCode.setItems("+354", "+91", "+62", "+98", "+964", "+353", "+44", "+972", "+39", "+225");
+            countryCode.setItems("+234");
             countryCode.addCustomValueSetListener(e -> countryCode.setValue(e.getDetail()));
             number.setPattern("\\d*");
             number.setPreventInvalidInput(true);

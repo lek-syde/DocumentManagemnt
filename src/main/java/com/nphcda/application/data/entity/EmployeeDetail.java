@@ -3,17 +3,27 @@ package com.nphcda.application.data.entity;
 import com.nphcda.application.data.AbstractEntity;
 import java.time.LocalDate;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
-public class SamplePerson extends AbstractEntity {
+public class EmployeeDetail extends AbstractEntity {
 
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
     private LocalDate dateOfBirth;
-    private String occupation;
+    private String department;
     private boolean important;
+
+
+
+    @OneToOne
+    @JoinColumn(name = "user")
+    private User userdetails;
+
 
     public String getFirstName() {
         return firstName;
@@ -45,12 +55,15 @@ public class SamplePerson extends AbstractEntity {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-    public String getOccupation() {
-        return occupation;
+
+    public String getDepartment() {
+        return department;
     }
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
+
     public boolean isImportant() {
         return important;
     }

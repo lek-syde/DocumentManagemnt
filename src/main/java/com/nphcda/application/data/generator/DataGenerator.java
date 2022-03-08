@@ -1,7 +1,7 @@
 package com.nphcda.application.data.generator;
 
 import com.nphcda.application.data.Role;
-import com.nphcda.application.data.entity.SamplePerson;
+import com.nphcda.application.data.entity.EmployeeDetail;
 import com.nphcda.application.data.entity.User;
 import com.nphcda.application.data.service.SamplePersonRepository;
 import com.nphcda.application.data.service.UserRepository;
@@ -35,15 +35,15 @@ public class DataGenerator {
             logger.info("Generating demo data");
 
             logger.info("... generating 100 Sample Person entities...");
-            ExampleDataGenerator<SamplePerson> samplePersonRepositoryGenerator = new ExampleDataGenerator<>(
-                    SamplePerson.class, LocalDateTime.of(2022, 3, 5, 0, 0, 0));
-            samplePersonRepositoryGenerator.setData(SamplePerson::setFirstName, DataType.FIRST_NAME);
-            samplePersonRepositoryGenerator.setData(SamplePerson::setLastName, DataType.LAST_NAME);
-            samplePersonRepositoryGenerator.setData(SamplePerson::setEmail, DataType.EMAIL);
-            samplePersonRepositoryGenerator.setData(SamplePerson::setPhone, DataType.PHONE_NUMBER);
-            samplePersonRepositoryGenerator.setData(SamplePerson::setDateOfBirth, DataType.DATE_OF_BIRTH);
-            samplePersonRepositoryGenerator.setData(SamplePerson::setOccupation, DataType.OCCUPATION);
-            samplePersonRepositoryGenerator.setData(SamplePerson::setImportant, DataType.BOOLEAN_10_90);
+            ExampleDataGenerator<EmployeeDetail> samplePersonRepositoryGenerator = new ExampleDataGenerator<>(
+                    EmployeeDetail.class, LocalDateTime.of(2022, 3, 5, 0, 0, 0));
+            samplePersonRepositoryGenerator.setData(EmployeeDetail::setFirstName, DataType.FIRST_NAME);
+            samplePersonRepositoryGenerator.setData(EmployeeDetail::setLastName, DataType.LAST_NAME);
+            samplePersonRepositoryGenerator.setData(EmployeeDetail::setEmail, DataType.EMAIL);
+            samplePersonRepositoryGenerator.setData(EmployeeDetail::setPhone, DataType.PHONE_NUMBER);
+            samplePersonRepositoryGenerator.setData(EmployeeDetail::setDateOfBirth, DataType.DATE_OF_BIRTH);
+            samplePersonRepositoryGenerator.setData(EmployeeDetail::setDepartment, DataType.OCCUPATION);
+            samplePersonRepositoryGenerator.setData(EmployeeDetail::setImportant, DataType.BOOLEAN_10_90);
             samplePersonRepository.saveAll(samplePersonRepositoryGenerator.create(100, seed));
 
             logger.info("... generating 2 User entities...");

@@ -1,6 +1,6 @@
 package com.nphcda.application.data.service;
 
-import com.nphcda.application.data.entity.SamplePerson;
+import com.nphcda.application.data.entity.EmployeeDetail;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +17,19 @@ public class SamplePersonService {
         this.repository = repository;
     }
 
-    public Optional<SamplePerson> get(UUID id) {
+    public Optional<EmployeeDetail> get(Long id) {
         return repository.findById(id);
     }
 
-    public SamplePerson update(SamplePerson entity) {
+    public EmployeeDetail update(EmployeeDetail entity) {
         return repository.save(entity);
     }
 
-    public void delete(UUID id) {
+    public void delete(Long id) {
         repository.deleteById(id);
     }
 
-    public Page<SamplePerson> list(Pageable pageable) {
+    public Page<EmployeeDetail> list(Pageable pageable) {
         return repository.findAll(pageable);
     }
 

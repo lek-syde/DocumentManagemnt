@@ -3,11 +3,11 @@ package com.nphcda.application.data.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nphcda.application.data.AbstractEntity;
 import com.nphcda.application.data.Role;
+
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
+import javax.persistence.*;
 
 @Entity
 public class User extends AbstractEntity {
@@ -16,10 +16,21 @@ public class User extends AbstractEntity {
     private String name;
     @JsonIgnore
     private String hashedPassword;
+
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    private Set<Role> roles= new HashSet<>();
     @Lob
     private String profilePictureUrl;
+
+
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phone;
+    private LocalDate dateOfBirth;
+    private String department;
+    private boolean important;
+
 
     public String getUsername() {
         return username;
@@ -52,4 +63,60 @@ public class User extends AbstractEntity {
         this.profilePictureUrl = profilePictureUrl;
     }
 
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public boolean isImportant() {
+        return important;
+    }
+
+    public void setImportant(boolean important) {
+        this.important = important;
+    }
 }

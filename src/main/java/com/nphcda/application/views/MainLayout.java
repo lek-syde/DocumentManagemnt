@@ -2,10 +2,9 @@ package com.nphcda.application.views;
 
 import com.nphcda.application.data.entity.User;
 import com.nphcda.application.security.AuthenticatedUser;
-import com.nphcda.application.views.about.AboutView;
-import com.nphcda.application.views.checkoutform.CheckoutFormView;
-import com.nphcda.application.views.helloworld.HelloWorldView;
-import com.nphcda.application.views.masterdetail.MasterDetailView;
+import com.nphcda.application.views.document.ListView;
+import com.nphcda.application.views.payslip.PaysliprequestView;
+import com.nphcda.application.views.payslip.RequestPayslip;
 import com.nphcda.application.views.personform.PersonFormView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -106,13 +105,15 @@ public class MainLayout extends AppLayout {
                 authenticatedUser.logout();
             });
 
-            Span name = new Span(user.getName());
+            Span name = new Span(user.getRoles().toString());
             name.addClassNames("font-medium", "text-s", "text-secondary");
 
             layout.add(avatar, name);
         } else {
             Anchor loginLink = new Anchor("login", "Sign in");
-            layout.add(loginLink);
+            loginLink.getStyle().set("margin-right", "5px");
+            Anchor SignupLink = new Anchor("signup", "Sign Up");
+            layout.add(loginLink, SignupLink);
         }
 
         Nav nav = new Nav();
@@ -136,15 +137,12 @@ public class MainLayout extends AppLayout {
 
     private MenuItemInfo[] createMenuItems() {
         return new MenuItemInfo[]{ //
-                new MenuItemInfo("Hello World", "la la-globe", HelloWorldView.class), //
+                new MenuItemInfo("Request payslip", "la la-globe", RequestPayslip.class), //
 
-                new MenuItemInfo("About", "la la-file", AboutView.class), //
+                new MenuItemInfo("Pay-slips [ADMIN]", "la la-file", ListView.class), //
 
-                new MenuItemInfo("Person Form", "la la-user", PersonFormView.class), //
-
-                new MenuItemInfo("Checkout Form", "la la-credit-card", CheckoutFormView.class), //
-
-                new MenuItemInfo("Master-Detail", "la la-columns", MasterDetailView.class), //
+                new MenuItemInfo("Pay-slips requests [ADMIN]", "la la-user", PaysliprequestView.class)
+                //
 
         };
     }

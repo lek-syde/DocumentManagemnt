@@ -1,6 +1,6 @@
 package com.nphcda.application.views.masterdetail;
 
-import com.nphcda.application.data.entity.SamplePerson;
+import com.nphcda.application.data.entity.EmployeeDetail;
 import com.nphcda.application.data.service.SamplePersonService;
 import com.nphcda.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
@@ -28,6 +28,8 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.security.PermitAll;
@@ -43,22 +45,22 @@ public class MasterDetailView extends Div implements BeforeEnterObserver {
     private final String SAMPLEPERSON_ID = "samplePersonID";
     private final String SAMPLEPERSON_EDIT_ROUTE_TEMPLATE = "master-detail/%s/edit";
 
-    private Grid<SamplePerson> grid = new Grid<>(SamplePerson.class, false);
+    private Grid<EmployeeDetail> grid = new Grid<>(EmployeeDetail.class, false);
 
     private TextField firstName;
     private TextField lastName;
     private TextField email;
     private TextField phone;
     private DatePicker dateOfBirth;
-    private TextField occupation;
+    private TextField department;
     private Checkbox important;
 
     private Button cancel = new Button("Cancel");
     private Button save = new Button("Save");
 
-    private BeanValidationBinder<SamplePerson> binder;
+    private BeanValidationBinder<EmployeeDetail> binder;
 
-    private SamplePerson samplePerson;
+    private EmployeeDetail employeeDetail;
 
     private SamplePersonService samplePersonService;
 
@@ -81,8 +83,8 @@ public class MasterDetailView extends Div implements BeforeEnterObserver {
         grid.addColumn("email").setAutoWidth(true);
         grid.addColumn("phone").setAutoWidth(true);
         grid.addColumn("dateOfBirth").setAutoWidth(true);
-        grid.addColumn("occupation").setAutoWidth(true);
-        LitRenderer<SamplePerson> importantRenderer = LitRenderer.<SamplePerson>of(
+        grid.addColumn("department").setAutoWidth(true);
+        LitRenderer<EmployeeDetail> importantRenderer = LitRenderer.<EmployeeDetail>of(
                 "<vaadin-icon icon='vaadin:${item.icon}' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: ${item.color};'></vaadin-icon>")
                 .withProperty("icon", important -> important.isImportant() ? "check" : "minus").withProperty("color",
                         important -> important.isImportant()
@@ -108,7 +110,7 @@ public class MasterDetailView extends Div implements BeforeEnterObserver {
         });
 
         // Configure Form
-        binder = new BeanValidationBinder<>(SamplePerson.class);
+        binder = new BeanValidationBinder<>(EmployeeDetail.class);
 
         // Bind fields. This is where you'd define e.g. validation rules
 
@@ -121,12 +123,12 @@ public class MasterDetailView extends Div implements BeforeEnterObserver {
 
         save.addClickListener(e -> {
             try {
-                if (this.samplePerson == null) {
-                    this.samplePerson = new SamplePerson();
+                if (this.employeeDetail == null) {
+                    this.employeeDetail = new EmployeeDetail();
                 }
-                binder.writeBean(this.samplePerson);
+                binder.writeBean(this.employeeDetail);
 
-                samplePersonService.update(this.samplePerson);
+                samplePersonService.update(this.employeeDetail);
                 clearForm();
                 refreshGrid();
                 Notification.show("SamplePerson details stored.");
@@ -140,14 +142,25 @@ public class MasterDetailView extends Div implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        Optional<UUID> samplePersonId = event.getRouteParameters().get(SAMPLEPERSON_ID).map(UUID::fromString);
-        if (samplePersonId.isPresent()) {
-            Optional<SamplePerson> samplePersonFromBackend = samplePersonService.get(samplePersonId.get());
+        Long samplePersonId= null;
+        try{
+             samplePersonId = Long.parseLong(event.getRouteParameters().get(SAMPLEPERSON_ID).get());
+         }catch (NoSuchElementException e){
+             Notification.show("ce",4, Notification.Position.BOTTOM_START);
+             // when a row is selected but the data is no longer available,
+             // refresh grid
+             refreshGrid();
+             event.forwardTo(MasterDetailView.class);
+         }
+
+
+        if (samplePersonId!=null) {
+            Optional<EmployeeDetail> samplePersonFromBackend = samplePersonService.get(samplePersonId);
             if (samplePersonFromBackend.isPresent()) {
                 populateForm(samplePersonFromBackend.get());
             } else {
                 Notification.show(
-                        String.format("The requested samplePerson was not found, ID = %s", samplePersonId.get()), 3000,
+                        String.format("The requested samplePerson was not found, ID = %s", samplePersonId), 3000,
                         Notification.Position.BOTTOM_START);
                 // when a row is selected but the data is no longer available,
                 // refresh grid
@@ -172,10 +185,10 @@ public class MasterDetailView extends Div implements BeforeEnterObserver {
         email = new TextField("Email");
         phone = new TextField("Phone");
         dateOfBirth = new DatePicker("Date Of Birth");
-        occupation = new TextField("Occupation");
+        department = new TextField("Occupation");
         important = new Checkbox("Important");
         important.getStyle().set("padding-top", "var(--lumo-space-m)");
-        Component[] fields = new Component[]{firstName, lastName, email, phone, dateOfBirth, occupation, important};
+        Component[] fields = new Component[]{firstName, lastName, email, phone, dateOfBirth, department, important};
 
         for (Component field : fields) {
             ((HasStyle) field).addClassName("full-width");
@@ -214,9 +227,9 @@ public class MasterDetailView extends Div implements BeforeEnterObserver {
         populateForm(null);
     }
 
-    private void populateForm(SamplePerson value) {
-        this.samplePerson = value;
-        binder.readBean(this.samplePerson);
+    private void populateForm(EmployeeDetail value) {
+        this.employeeDetail = value;
+        binder.readBean(this.employeeDetail);
 
     }
 }
