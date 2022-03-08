@@ -33,36 +33,36 @@ public class DataGenerator {
             int seed = 123;
 
             logger.info("Generating demo data");
-
-            logger.info("... generating 100 Sample Person entities...");
-            ExampleDataGenerator<EmployeeDetail> samplePersonRepositoryGenerator = new ExampleDataGenerator<>(
-                    EmployeeDetail.class, LocalDateTime.of(2022, 3, 5, 0, 0, 0));
-            samplePersonRepositoryGenerator.setData(EmployeeDetail::setFirstName, DataType.FIRST_NAME);
-            samplePersonRepositoryGenerator.setData(EmployeeDetail::setLastName, DataType.LAST_NAME);
-            samplePersonRepositoryGenerator.setData(EmployeeDetail::setEmail, DataType.EMAIL);
-            samplePersonRepositoryGenerator.setData(EmployeeDetail::setPhone, DataType.PHONE_NUMBER);
-            samplePersonRepositoryGenerator.setData(EmployeeDetail::setDateOfBirth, DataType.DATE_OF_BIRTH);
-            samplePersonRepositoryGenerator.setData(EmployeeDetail::setDepartment, DataType.OCCUPATION);
-            samplePersonRepositoryGenerator.setData(EmployeeDetail::setImportant, DataType.BOOLEAN_10_90);
-            samplePersonRepository.saveAll(samplePersonRepositoryGenerator.create(100, seed));
-
-            logger.info("... generating 2 User entities...");
-            User user = new User();
-            user.setName("John Normal");
-            user.setUsername("user");
-            user.setHashedPassword(passwordEncoder.encode("user"));
-            user.setProfilePictureUrl(
-                    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80");
-            user.setRoles(Collections.singleton(Role.USER));
-            userRepository.save(user);
-            User admin = new User();
-            admin.setName("Emma Powerful");
-            admin.setUsername("admin");
-            admin.setHashedPassword(passwordEncoder.encode("admin"));
-            admin.setProfilePictureUrl(
-                    "https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80");
-            admin.setRoles(Stream.of(Role.USER, Role.ADMIN).collect(Collectors.toSet()));
-            userRepository.save(admin);
+//
+//            logger.info("... generating 100 Sample Person entities...");
+//            ExampleDataGenerator<EmployeeDetail> samplePersonRepositoryGenerator = new ExampleDataGenerator<>(
+//                    EmployeeDetail.class, LocalDateTime.of(2022, 3, 5, 0, 0, 0));
+//            samplePersonRepositoryGenerator.setData(EmployeeDetail::setFirstName, DataType.FIRST_NAME);
+//            samplePersonRepositoryGenerator.setData(EmployeeDetail::setLastName, DataType.LAST_NAME);
+//            samplePersonRepositoryGenerator.setData(EmployeeDetail::setEmail, DataType.EMAIL);
+//            samplePersonRepositoryGenerator.setData(EmployeeDetail::setPhone, DataType.PHONE_NUMBER);
+//            samplePersonRepositoryGenerator.setData(EmployeeDetail::setDateOfBirth, DataType.DATE_OF_BIRTH);
+//            samplePersonRepositoryGenerator.setData(EmployeeDetail::setDepartment, DataType.OCCUPATION);
+//            samplePersonRepositoryGenerator.setData(EmployeeDetail::setImportant, DataType.BOOLEAN_10_90);
+//            samplePersonRepository.saveAll(samplePersonRepositoryGenerator.create(100, seed));
+//
+//            logger.info("... generating 2 User entities...");
+//            User user = new User();
+//            user.setName("John Normal");
+//            user.setUsername("user");
+//            user.setHashedPassword(passwordEncoder.encode("user"));
+//            user.setProfilePictureUrl(
+//                    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80");
+//            user.setRoles(Collections.singleton(Role.USER));
+//            userRepository.save(user);
+//            User admin = new User();
+//            admin.setName("Emma Powerful");
+//            admin.setUsername("admin");
+//            admin.setHashedPassword(passwordEncoder.encode("admin"));
+//            admin.setProfilePictureUrl(
+//                    "https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80");
+//            admin.setRoles(Stream.of(Role.USER, Role.ADMIN).collect(Collectors.toSet()));
+//            userRepository.save(admin);
 
             logger.info("Generated demo data");
         };
